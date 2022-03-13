@@ -1,0 +1,22 @@
+{% extends 'create_team_base.html' %}
+
+{% block response%}
+
+<div class="form-check d-flex justify-content-center mb-2">
+  <label class="correct form-check-label" for="form2Example3">
+  Team <b>{{name}}</b> successfully registered.
+  </label>
+</div>
+
+<div class="form-check d-flex justify-content-center mb-2">
+  <label class="form-check-label" for="form2Example3">
+  Copy team code: <b>{{code}}</b> </b>
+  </label>
+
+</div><div class="form-check d-flex justify-content-center mb-4">
+  <label class="form-check-label" for="form2Example3">
+  Send this code to your teammates.
+  </label>
+</div>
+
+{% endblock response%}

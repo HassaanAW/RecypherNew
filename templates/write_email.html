@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <title>Email | Recypher</title>
+  </head>
+  
+  <style>
+    .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    .btn {
+      border-radius: 12px;
+      font-size: 20px;
+    }
+</style>
+
+  <body>
+    <style>
+        .col-form-label {
+            color: #005a9e;
+            background-color: #eff6fc;
+            text-align: center;
+            border-radius: 2px;
+        }
+    
+        .btn {
+          text-align: center;
+          cursor: pointer;
+          padding: 0px 16px;
+          border-radius: 2px;
+          min-width: 80px;
+          height: 32px;
+          background-color: #0078d4
+        }
+    
+    </style>
+    
+    <div class="container-fluid mb-3" style="width: 900px; background-color: #F9F9F9; padding: 25px">
+    
+      <h3 class="row justify-content-center align-items-center  mt-3 mb-3"> Compose an Email (1/2) </h3>
+      <label class="form-label" for="form3Example3c">Write your first of two phishing emails to any of the employees in order 
+        to exploit their weaknesses. You can learn more about them through the hospital <a href="https://recypher.eu/" target="_blank">website</a>. </label>
+        <label class="form-label" for="form3Example3c">You have 15 minutes for this task. </label>
+        <label class="form-label" for="form3Example3c">Once you have written, submit and move to the next email. </label>
+        <p class="row justify-content-center align-items-center mt-3" style="font-weight: bold; color:#005a9e"> Remaining Time </p>
+    
+        <div class="row justify-content-center border rounded-pill mb-2" style="font-weight: bold; background-color: #E3F1F5" id="countdown"> </div>
+        <div class="row justify-content-center mb-2" style="color: red" id="countdown_message"></div>
+        <script>
+        var yourDateToGo = new Date(); //here you're making new Date object
+        yourDateToGo.setMinutes(yourDateToGo.getMinutes() + 15); 
+    
+        var timing = setInterval( // you're making an interval - a thing, that is updating content after number of miliseconds, that you're writing after comma as second parameter
+          function () {
+    
+            var currentDate = new Date().getTime(); //same thing as above
+            var timeLeft = yourDateToGo - currentDate; //difference between time you set and now in miliseconds
+    
+            var days = Math.floor(timeLeft / (1000 * 60 * 60 * 24)); //conversion miliseconds on days 
+            if (days < 10) days="0"+days; //if number of days is below 10, programm is writing "0" before 9, that's why you see "09" instead of "9"
+            var hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); //conversion miliseconds on hours
+            if (hours < 10) hours="0"+hours;
+            var minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60)); //conversion miliseconds on minutes 
+            if (minutes < 10) minutes="0"+minutes;
+            var seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);//conversion miliseconds on seconds
+            if (seconds < 10) seconds="0"+seconds;
+    
+            document.getElementById("countdown").innerHTML = minutes + "m " + seconds + "s"; // putting number of days, hours, minutes and seconds in div, 
+            //which id is countdown
+    
+            if (timeLeft <= 0) {
+              clearInterval(timing);
+              document.getElementById("countdown").innerHTML = "Time's up"; 
+              document.getElementById("countdown_message").innerHTML = "Email has been submitted. Moving to second email in 5 seconds.";
+              setTimeout(function(){  document.getElementById("submit").click(); }, 5000); 
+            }}, 1000);
+        </script>
+        
+        <form method="post" action="email">
+        {% csrf_token %}
+        
+        <div class="mb-3 my-3 row">
+     
+            <label for="FromField" class="col-sm-1 col-form-label"> <b>From:</b> </label>
+            <div class="col-sm-5">
+                <input type="email" class="form-control" id="FromField" name="FromField" placeholder="sender@example.com">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="ToField" class="col-sm-1 col-form-label"><b> To:</b></label>
+            <div class="col-sm-5">
+                <input type="email" class="form-control" id="ToField" name="ToField" placeholder="receiver@example.com">
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="Subject" class="col-sm-1 col-form-label"><b>Subject:</b></label>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" id="Subject" name="Subject" placeholder="Add a subject">
+            </div>
+        </div>
+    
+        <div class="mb-1 row">
+          <div class="col-sm-8">
+            {{form.media}}
+            {{form.as_p}}
+          </div>
+      </div>   
+       
+        <div class="row justify-content-center align-items-center">
+          <button class="col-sm-1 btn btn-primary btn-lg" id= "submit" type="submit"> Send </button>
+        </div>
+      </form>
+    
+    </div>
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    {% comment %} To add blocks, use this format
+    {% block name %}{% endblock name %} {% endcomment %}
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    -->
+  </body>
+</html>
